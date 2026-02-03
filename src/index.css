@@ -66,3 +66,50 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.auth-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 20px;
+}
+
+.auth-container h2 {
+  text-align: center;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-container input {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.auth-container button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+.dashboard {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.dashboard button {
+  margin-top: 20px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.notfound {
+  text-align: center;
+  margin-top: 80px;
+}
