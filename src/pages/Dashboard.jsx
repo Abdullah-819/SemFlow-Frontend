@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import api from "../api/axios"
 import { useAuth } from "../hooks/useAuth"
+import Assessments from "./Assessments"
 
 const Dashboard = () => {
   const { user, logout } = useAuth()
@@ -163,6 +164,7 @@ const Dashboard = () => {
       </header>
 
       <main className="main-content">
+        {activeTab === "assessments" && (<Assessments />)}
         {activeTab === "courses" && !selectedCourse && (
           <section className="section">
             <div className="section-header">
@@ -256,6 +258,7 @@ const Dashboard = () => {
         <nav className="side-nav">
           <div className="nav-section">
             <span className="nav-title">Academics</span>
+            <button className={activeTab === "assessments" ? "active" : ""}onClick={() => navigate("assessments")}>📝 Assessments</button>
             <button className={activeTab === "courses" ? "active" : ""} onClick={() => navigate("courses")}>📘 Courses</button>
             <button className={activeTab === "venues" ? "active" : ""} onClick={() => navigate("venues")}>🏫 Venues</button>
             <button className={activeTab === "calendar" ? "active" : ""} onClick={() => navigate("calendar")}>🗓️ Semester Calendar</button>
