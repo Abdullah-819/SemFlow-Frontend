@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import api from "../api/axios"
 import { useAuth } from "../hooks/useAuth"
 import Assessments from "./Assessments"
 
 const Dashboard = () => {
   const { user, logout } = useAuth()
+  const location = useLocation()
+  const routerNavigate = useNavigate()
 
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -27,6 +30,15 @@ const Dashboard = () => {
     labAssignments: "",
     labQuizzes: ""
   })
+
+  useEffect(() => {
+    const path = location.pathname
+    if (path.includes("/dashboard/venues")) setActiveTab("venues")
+    else if (path.includes("/dashboard/timetable")) setActiveTab("timetable")
+    else if (path.includes("/dashboard/calendar")) setActiveTab("calendar")
+    else if (path.includes("/dashboard/password")) setActiveTab("password")
+    else setActiveTab("courses")
+  }, [location.pathname])
 
   useEffect(() => {
     const loadCourses = async () => {
@@ -61,6 +73,12 @@ const Dashboard = () => {
     setActiveTab(tab)
     setSelectedCourse(null)
     setMenuOpen(false)
+
+    if (tab === "venues") routerNavigate("/dashboard/venues")
+    if (tab === "timetable") routerNavigate("/dashboard/timetable")
+    if (tab === "calendar") routerNavigate("/dashboard/calendar")
+    if (tab === "password") routerNavigate("/dashboard/password")
+    if (tab === "courses") routerNavigate("/dashboard")
   }
 
   const handleChange = e => {
@@ -104,16 +122,15 @@ const Dashboard = () => {
   const saveCourse = async () => {
     setSaving(true)
     const payload = {
-  courseName: form.courseName,
-  creditHours: Number(form.creditHours),
-  theoryAssignments: Number(form.theoryAssignments),
-  theoryQuizzes: Number(form.theoryQuizzes),
-  hasLab: Boolean(form.hasLab),
-  labHours: form.hasLab ? Number(form.labHours) : 0,
-  labAssignments: form.hasLab ? Number(form.labAssignments) : 0,
-  labQuizzes: form.hasLab ? Number(form.labQuizzes) : 0
-}
-
+      courseName: form.courseName,
+      creditHours: Number(form.creditHours),
+      theoryAssignments: Number(form.theoryAssignments),
+      theoryQuizzes: Number(form.theoryQuizzes),
+      hasLab: Boolean(form.hasLab),
+      labHours: form.hasLab ? Number(form.labHours) : 0,
+      labAssignments: form.hasLab ? Number(form.labAssignments) : 0,
+      labQuizzes: form.hasLab ? Number(form.labQuizzes) : 0
+    }
 
     try {
       let updated
@@ -164,7 +181,12 @@ const Dashboard = () => {
       </header>
 
       <main className="main-content">
-        {activeTab === "assessments" && (<Assessments />)}
+        {["venues", "timetable", "calendar", "password"].includes(activeTab) && (
+          <Outlet />
+        )}
+
+        {activeTab === "assessments" && <Assessments />}
+
         {activeTab === "courses" && !selectedCourse && (
           <section className="section">
             <div className="section-header">
@@ -258,7 +280,7 @@ const Dashboard = () => {
         <nav className="side-nav">
           <div className="nav-section">
             <span className="nav-title">Academics</span>
-            <button className={activeTab === "assessments" ? "active" : ""}onClick={() => navigate("assessments")}>📝 Assessments</button>
+            <button className={activeTab === "assessments" ? "active" : ""} onClick={() => navigate("assessments")}>📝 Assessments</button>
             <button className={activeTab === "courses" ? "active" : ""} onClick={() => navigate("courses")}>📘 Courses</button>
             <button className={activeTab === "venues" ? "active" : ""} onClick={() => navigate("venues")}>🏫 Venues</button>
             <button className={activeTab === "calendar" ? "active" : ""} onClick={() => navigate("calendar")}>🗓️ Semester Calendar</button>
@@ -279,39 +301,6 @@ const Dashboard = () => {
           </button>
         </div>
       </aside>
-
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-sheet">
-            <h3>{editingCourse ? "Edit Course" : "Add Course"}</h3>
-
-            <input name="courseName" placeholder="Course Name" value={form.courseName} onChange={handleChange} />
-            <input name="creditHours" type="number" placeholder="Credit Hours" value={form.creditHours} onChange={handleChange} />
-            <input name="theoryAssignments" type="number" placeholder="Theory Assignments" value={form.theoryAssignments} onChange={handleChange} />
-            <input name="theoryQuizzes" type="number" placeholder="Theory Quizzes" value={form.theoryQuizzes} onChange={handleChange} />
-
-            <label className="checkbox-row">
-              <input type="checkbox" name="hasLab" checked={form.hasLab} onChange={handleChange} />
-              Has Lab
-            </label>
-
-            {form.hasLab && (
-              <>
-                <input name="labHours" type="number" placeholder="Lab Hours" value={form.labHours} onChange={handleChange} />
-                <input name="labAssignments" type="number" placeholder="Lab Assignments" value={form.labAssignments} onChange={handleChange} />
-                <input name="labQuizzes" type="number" placeholder="Lab Quizzes" value={form.labQuizzes} onChange={handleChange} />
-              </>
-            )}
-
-            <div className="modal-actions">
-              <button className="secondary-btn" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="primary-btn" onClick={saveCourse} disabled={saving}>
-                {saving ? "Saving..." : "Save"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

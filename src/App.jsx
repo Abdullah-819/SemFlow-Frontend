@@ -4,6 +4,8 @@ import Register from "./pages/Register"
 import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Venues from "./pages/Venues"
+import SemesterCalendar from "./pages/SemesterCalendar"
 
 function App() {
   return (
@@ -12,13 +14,16 @@ function App() {
       <Route path="/register" element={<Register />} />
 
       <Route
-        path="/dashboard"
+        path="/dashboard/*"
         element={
           <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="venues" element={<Venues />} />
+        <Route path="calendar" element={<SemesterCalendar />} />
+      </Route>
 
       <Route path="*" element={<NotFound />} />
     </Routes>
