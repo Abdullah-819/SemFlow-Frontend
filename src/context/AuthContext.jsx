@@ -1,35 +1,39 @@
 import { createContext, useEffect, useState } from "react"
 import api from "../api/axios"
-import { setToken, getToken, removeToken } from "../utils/storage"
+import { getToken, setToken, removeToken } from "../utils/storage"
 
 export const AuthContext = createContext(null)
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [token, setAuthToken] = useState(getToken())
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = getToken()
     if (token) {
-      setUser({ authenticated: true })
+      setLoading(false)
+    } else {
+      setLoading(false)
     }
-    setLoading(false)
-  }, [])
+  }, [token])
 
-  const login = async data => {
-    const res = await api.post("/auth/login", data)
+  const login = async credentials => {
+    const res = await api.post("/auth/login", credentials)
     setToken(res.data.token)
-    setUser({ authenticated: true })
+    setAuthToken(res.data.token)
+    setUser(res.data.user)
   }
 
   const register = async data => {
     const res = await api.post("/auth/register", data)
     setToken(res.data.token)
-    setUser({ authenticated: true })
+    setAuthToken(res.data.token)
+    setUser(res.data.user)
   }
 
   const logout = () => {
     removeToken()
+    setAuthToken(null)
     setUser(null)
   }
 
@@ -37,10 +41,12 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
+        token,
         loading,
         login,
         register,
-        logout
+        logout,
+        isAuthenticated: !!token
       }}
     >
       {children}

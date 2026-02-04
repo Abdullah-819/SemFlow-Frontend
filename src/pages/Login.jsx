@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
-export default function Login() {
+const Login = () => {
   const { login } = useAuth()
   const navigate = useNavigate()
 
@@ -15,19 +15,19 @@ export default function Login() {
     setError("")
     try {
       await login({ rollNumber, password })
-      navigate("/")
-    } catch (err) {
+      navigate("/dashboard")
+    } catch {
       setError("Invalid credentials")
     }
   }
 
   return (
     <div className="auth-container">
-      <h2>Login</h2>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Login</h2>
 
-      {error && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
 
-      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Roll Number"
@@ -45,7 +45,13 @@ export default function Login() {
         />
 
         <button type="submit">Login</button>
+
+        <p className="switch">
+          Don’t have an account? <Link to="/register">Register</Link>
+        </p>
       </form>
     </div>
   )
 }
+
+export default Login

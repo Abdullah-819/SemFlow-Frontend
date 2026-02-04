@@ -1,11 +1,12 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
-export default function Register() {
+const Register = () => {
   const { register } = useAuth()
   const navigate = useNavigate()
 
+  const [name, setName] = useState("")
   const [rollNumber, setRollNumber] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -14,20 +15,28 @@ export default function Register() {
     e.preventDefault()
     setError("")
     try {
-      await register({ rollNumber, password })
-      navigate("/")
-    } catch (err) {
+      await register({ name, rollNumber, password })
+      navigate("/dashboard")
+    } catch {
       setError("Registration failed")
     }
   }
 
   return (
     <div className="auth-container">
-      <h2>Register</h2>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Register</h2>
 
-      {error && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
 
-      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          required
+        />
+
         <input
           type="text"
           placeholder="Roll Number"
@@ -45,7 +54,13 @@ export default function Register() {
         />
 
         <button type="submit">Register</button>
+
+        <p className="switch">
+          Already have an account? <Link to="/">Login</Link>
+        </p>
       </form>
     </div>
   )
 }
+
+export default Register
