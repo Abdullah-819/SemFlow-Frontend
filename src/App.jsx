@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Venues from "./pages/Venues"
 import SemesterCalendar from "./pages/SemesterCalendar"
+import About from "./pages/About"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       >
         <Route path="venues" element={<Venues />} />
         <Route path="calendar" element={<SemesterCalendar />} />
+        <Route path="about" element={<About />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
