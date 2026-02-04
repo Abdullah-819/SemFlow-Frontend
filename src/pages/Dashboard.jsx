@@ -103,15 +103,16 @@ const Dashboard = () => {
   const saveCourse = async () => {
     setSaving(true)
     const payload = {
-      courseName: form.courseName,
-      creditHours: Number(form.creditHours),
-      theoryAssignments: Number(form.theoryAssignments),
-      theoryQuizzes: Number(form.theoryQuizzes),
-      hasLab: form.hasLab,
-      labHours: form.hasLab ? Number(form.labHours) : undefined,
-      labAssignments: form.hasLab ? Number(form.labAssignments) : undefined,
-      labQuizzes: form.hasLab ? Number(form.labQuizzes) : undefined
-    }
+  courseName: form.courseName,
+  creditHours: Number(form.creditHours),
+  theoryAssignments: Number(form.theoryAssignments),
+  theoryQuizzes: Number(form.theoryQuizzes),
+  hasLab: Boolean(form.hasLab),
+  labHours: form.hasLab ? Number(form.labHours) : 0,
+  labAssignments: form.hasLab ? Number(form.labAssignments) : 0,
+  labQuizzes: form.hasLab ? Number(form.labQuizzes) : 0
+}
+
 
     try {
       let updated

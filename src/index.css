@@ -21,11 +21,9 @@ body {
   min-height: 100vh;
   background: var(--bg-main);
   color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+  margin: 0;
 }
+
 
 a {
   color: var(--accent);
@@ -33,11 +31,13 @@ a {
 }
 
 .auth-container {
-  width: 100%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
+
 
 .auth-form {
   width: 100%;
@@ -223,8 +223,10 @@ a {
 }
 
 .section {
-  margin-top: 1.2rem;
+  width: 100%;
+  max-width: 100%;
 }
+
 
 .section-header {
   display: flex;
@@ -399,10 +401,13 @@ a {
   margin-top: 0.3rem;
   color: var(--text-muted);
 }
+
 .app-shell {
   min-height: 100vh;
+  width: 100%;
   background: var(--bg-main);
 }
+
 
 .topbar {
   position: fixed;
@@ -459,7 +464,9 @@ a {
   padding-top: 72px;
   padding-left: 1rem;
   padding-right: 1rem;
+  width: 100%;
 }
+
 
 .side-overlay {
   position: fixed;
@@ -676,12 +683,28 @@ a {
 
 
 .course-table {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
 }
 
+@media (min-width: 640px) {
+  .course-table {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .course-table {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
 .course-row {
+  width: 100%;
+  min-height: 130px;
   padding: 1rem;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.08);
@@ -693,6 +716,13 @@ a {
   cursor: pointer;
   transition: transform 0.15s ease;
 }
+@media (min-width: 768px) {
+  .course-row {
+    grid-template-columns: 2.5fr 1fr 1.2fr 1.2fr;
+    align-items: center;
+  }
+}
+
 
 .course-row:active {
   transform: scale(0.97);
