@@ -10,22 +10,18 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (token) {
-      setLoading(false)
-    } else {
-      setLoading(false)
-    }
-  }, [token])
+    setLoading(false)
+  }, [])
 
   const login = async credentials => {
-    const res = await api.post("/auth/login", credentials)
+    const res = await api.post("/api/auth/login", credentials)
     setToken(res.data.token)
     setAuthToken(res.data.token)
     setUser(res.data.user)
   }
 
   const register = async data => {
-    const res = await api.post("/auth/register", data)
+    const res = await api.post("/api/auth/register", data)
     setToken(res.data.token)
     setAuthToken(res.data.token)
     setUser(res.data.user)

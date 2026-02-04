@@ -6,7 +6,7 @@ const Register = () => {
   const { register } = useAuth()
   const navigate = useNavigate()
 
-  const [name, setName] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const [rollNumber, setRollNumber] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -15,7 +15,7 @@ const Register = () => {
     e.preventDefault()
     setError("")
     try {
-      await register({ name, rollNumber, password })
+      await register({ displayName, rollNumber, password })
       navigate("/dashboard")
     } catch {
       setError("Registration failed")
@@ -31,9 +31,9 @@ const Register = () => {
 
         <input
           type="text"
-          placeholder="Name"
-          value={name}
-          onChange={e => setName(e.target.value)}
+          placeholder="Full Name"
+          value={displayName}
+          onChange={e => setDisplayName(e.target.value)}
           required
         />
 
