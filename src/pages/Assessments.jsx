@@ -63,7 +63,10 @@ const Assessments = () => {
   }, [])
 
   const openEditor = course => {
-    const existing = assessments.find(a => a.course._id === course._id)
+    const existing = assessments.find(
+  a => a.course && a.course._id === course._id
+)
+
 
     setSelected(course)
 
@@ -125,7 +128,10 @@ const Assessments = () => {
 
     const res = await api.post("/api/assessments", payload)
 
-    const updated = assessments.filter(a => a.course._id !== selected._id)
+    const updated = assessments.filter(
+  a => a.course && a.course._id !== selected._id
+)
+
     updated.push(res.data)
 
     setAssessments(updated)
@@ -305,7 +311,10 @@ const Assessments = () => {
 
       <div className="course-table">
         {courses.map(course => {
-          const assessment = assessments.find(a => a.course._id === course._id)
+          const assessment = assessments.find(
+  a => a.course && a.course._id === course._id
+)
+
 
           return (
             <div
@@ -320,7 +329,10 @@ const Assessments = () => {
               <div className="course-cell">
                 <span className="cell-label">Marks</span>
                 <span className="cell-value">
-                  {assessment ? assessment.finalMarks.toFixed(2) : "Enter"}
+                  {assessment && typeof assessment.finalMarks === "number"
+  ? assessment.finalMarks.toFixed(2)
+  : "Enter"}
+
                 </span>
               </div>
               <div className="course-cell">

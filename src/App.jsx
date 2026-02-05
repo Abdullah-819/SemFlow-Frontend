@@ -1,9 +1,14 @@
 import { Routes, Route } from "react-router-dom"
+
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
+
 import ProtectedRoute from "./components/ProtectedRoute"
+
+import Courses from "./pages/Courses"
+import Assessments from "./pages/Assessments"
 import Venues from "./pages/Venues"
 import SemesterCalendar from "./pages/SemesterCalendar"
 import About from "./pages/About"
@@ -22,6 +27,8 @@ function App() {
           </ProtectedRoute>
         }
       >
+        <Route index element={<Courses />} />
+        <Route path="assessments" element={<Assessments />} />
         <Route path="venues" element={<Venues />} />
         <Route path="calendar" element={<SemesterCalendar />} />
         <Route path="about" element={<About />} />

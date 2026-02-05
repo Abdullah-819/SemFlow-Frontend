@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const slots = [
   { label: "1st Slot", time: "8:30 – 9:55" },
@@ -7,7 +7,7 @@ const slots = [
   { label: "Break", time: "12:45 – 1:45" },
   { label: "4th Slot", time: "1:45 – 3:05" },
   { label: "5th Slot", time: "3:05 – 4:30" }
-];
+]
 
 const timetable = [
   {
@@ -31,10 +31,7 @@ const timetable = [
       }
     ]
   },
-  {
-    day: "Tuesday",
-    lectures: []
-  },
+  { day: "Tuesday", lectures: [] },
   {
     day: "Wednesday",
     lectures: [
@@ -122,12 +119,11 @@ const timetable = [
       }
     ]
   }
-];
+]
 
-export default function Venues() {
-  const [selectedDay, setSelectedDay] = useState("Monday");
-
-  const currentDay = timetable.find(d => d.day === selectedDay);
+const Venues = () => {
+  const [selectedDay, setSelectedDay] = useState("Monday")
+  const currentDay = timetable.find(d => d.day === selectedDay)
 
   return (
     <div className="page">
@@ -145,6 +141,15 @@ export default function Venues() {
         ))}
       </div>
 
+      <div className="slot-legend">
+        {slots.map(s => (
+          <div key={s.label} className="slot-pill">
+            <span>{s.label}</span>
+            <small>{s.time}</small>
+          </div>
+        ))}
+      </div>
+
       {currentDay.lectures.length === 0 ? (
         <div className="holiday-card">
           Tuesday is a holiday for FA24-BCS-4-E 📍
@@ -154,15 +159,25 @@ export default function Venues() {
           {currentDay.lectures.map((lec, i) => (
             <div key={i} className="card">
               <div className="card-title">
-                {lec.subject} <span className="badge">{lec.type}</span>
+                {lec.subject}
+                <span className={`badge ${lec.type.toLowerCase()}`}>
+                  {lec.type}
+                </span>
               </div>
-              <div className="card-row">{lec.slot} · {lec.time}</div>
+
+              <div className="card-row">
+                {lec.slot} · {lec.time}
+              </div>
+
               <div className="card-row">{lec.teacher}</div>
+
               <div className="card-row venue">{lec.venue}</div>
             </div>
           ))}
         </div>
       )}
     </div>
-  );
+  )
 }
+
+export default Venues
