@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
 const Register = () => {
-  const { register } = useAuth()
+  const { register, loading } = useAuth()
   const navigate = useNavigate()
 
   const [displayName, setDisplayName] = useState("")
@@ -13,12 +13,14 @@ const Register = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    if (loading) return
+
     setError("")
     try {
       await register({ displayName, rollNumber, password })
       navigate("/dashboard")
     } catch {
-      setError("Registration failed")
+      setError("Registration failed. Try again.")
     }
   }
 
@@ -34,6 +36,7 @@ const Register = () => {
           placeholder="Full Name"
           value={displayName}
           onChange={e => setDisplayName(e.target.value)}
+          disabled={loading}
           required
         />
 
@@ -42,6 +45,7 @@ const Register = () => {
           placeholder="Roll Number"
           value={rollNumber}
           onChange={e => setRollNumber(e.target.value)}
+          disabled={loading}
           required
         />
 
@@ -50,10 +54,13 @@ const Register = () => {
           placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
+          disabled={loading}
           required
         />
 
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating account…" : "Register"}
+        </button>
 
         <p className="switch">
           Already have an account? <Link to="/">Login</Link>

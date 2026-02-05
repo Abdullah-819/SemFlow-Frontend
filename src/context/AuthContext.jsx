@@ -5,17 +5,25 @@ import api from "../api/axios"
 export const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("semflow_user"))
-  )
-  const [token, setAuthToken] = useState(getToken())
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(() => {
+    try {
+      const cached = localStorage.getItem("semflow_user")
+      return cached ? JSON.parse(cached) : null
+    } catch {
+      return null
+    }
+  })
+
+  const [token, setAuthToken] = useState(() => getToken())
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setLoading(false)
   }, [])
 
   const login = async credentials => {
+    setLoading(true)
+
     const res = await api.post("/api/auth/login", credentials)
 
     setToken(res.data.token)
@@ -26,9 +34,13 @@ export const AuthProvider = ({ children }) => {
 
     setAuthToken(res.data.token)
     setUser(res.data.user)
+
+    setLoading(false)
   }
 
   const register = async data => {
+    setLoading(true)
+
     const res = await api.post("/api/auth/register", data)
 
     setToken(res.data.token)
@@ -39,6 +51,8 @@ export const AuthProvider = ({ children }) => {
 
     setAuthToken(res.data.token)
     setUser(res.data.user)
+
+    setLoading(false)
   }
 
   const logout = () => {

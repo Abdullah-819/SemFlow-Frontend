@@ -126,14 +126,14 @@ const Venues = () => {
   const currentDay = timetable.find(d => d.day === selectedDay)
 
   return (
-    <div className="page">
+    <div className="venues-page">
       <h2 className="page-title">Venues</h2>
 
       <div className="day-filter">
         {timetable.map(d => (
           <button
             key={d.day}
-            className={selectedDay === d.day ? "day-btn active" : "day-btn"}
+            className={`day-btn ${selectedDay === d.day ? "active" : ""}`}
             onClick={() => setSelectedDay(d.day)}
           >
             {d.day}
@@ -141,7 +141,7 @@ const Venues = () => {
         ))}
       </div>
 
-      <div className="slot-legend">
+      <div className="slot-legend premium">
         {slots.map(s => (
           <div key={s.label} className="slot-pill">
             <span>{s.label}</span>
@@ -150,28 +150,37 @@ const Venues = () => {
         ))}
       </div>
 
+      <div className="day-header">
+        <h3>{selectedDay}</h3>
+        <span>{currentDay.lectures.length} Lectures</span>
+      </div>
+
       {currentDay.lectures.length === 0 ? (
-        <div className="holiday-card">
-          Tuesday is a holiday for FA24-BCS-4-E 📍
+        <div className="holiday-card premium">
+          🎉 No lectures today  
+          <small>FA24-BCS-4-E</small>
         </div>
       ) : (
-        <div className="card-list">
+        <div className="card-list premium">
           {currentDay.lectures.map((lec, i) => (
-            <div key={i} className="card">
-              <div className="card-title">
-                {lec.subject}
+            <div key={i} className="venue-card">
+              <div className="venue-card-header">
+                <h4>{lec.subject}</h4>
                 <span className={`badge ${lec.type.toLowerCase()}`}>
                   {lec.type}
                 </span>
               </div>
 
-              <div className="card-row">
-                {lec.slot} · {lec.time}
+              <div className="venue-meta">
+                <span>{lec.slot}</span>
+                <span>{lec.time}</span>
               </div>
 
-              <div className="card-row">{lec.teacher}</div>
+              <div className="venue-teacher">{lec.teacher}</div>
 
-              <div className="card-row venue">{lec.venue}</div>
+              <div className="venue-location">
+                📍 {lec.venue}
+              </div>
             </div>
           ))}
         </div>

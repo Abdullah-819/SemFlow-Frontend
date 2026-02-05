@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
 const Login = () => {
-  const { login } = useAuth()
+  const { login, loading } = useAuth()
   const navigate = useNavigate()
 
   const [rollNumber, setRollNumber] = useState("")
@@ -12,12 +12,14 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    if (loading) return
+
     setError("")
     try {
       await login({ rollNumber, password })
       navigate("/dashboard")
     } catch {
-      setError("Invalid credentials")
+      setError("Invalid roll number or password")
     }
   }
 
@@ -33,6 +35,7 @@ const Login = () => {
           placeholder="Roll Number"
           value={rollNumber}
           onChange={e => setRollNumber(e.target.value)}
+          disabled={loading}
           required
         />
 
@@ -41,10 +44,13 @@ const Login = () => {
           placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
+          disabled={loading}
           required
         />
 
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in…" : "Login"}
+        </button>
 
         <p className="switch">
           Don’t have an account? <Link to="/register">Register</Link>
