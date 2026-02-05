@@ -112,6 +112,10 @@ const Dashboard = () => {
           </button>
         </div>
       </aside>
+      <footer className="app-footer">
+  Developed by Abdullah Rana © 2026
+</footer>
+
     </div>
   )
 }
