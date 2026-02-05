@@ -1,43 +1,102 @@
 :root {
-  --bg-main: radial-gradient(900px 700px at 10% 10%, #1e293b 0%, #020617 45%, #020617 100%);
+  --bg-main: radial-gradient(
+    900px 700px at 10% 10%,
+    #1e293b 0%,
+    #020617 45%,
+    #020617 100%
+  );
+
   --glass-bg: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.18);
+
   --text-main: #e5e7eb;
   --text-muted: #94a3b8;
+
   --accent: #38bdf8;
   --accent-strong: #0ea5e9;
   --danger: #f87171;
+
   --blur: blur(16px);
 }
-html,
-body {
-  background: #0a0e1e;
-}
 
+/* ================= RESET ================= */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* ================= BASE ================= */
+
+html,
 body {
-    padding-top: env(safe-area-inset-top);
+  min-height: 100%;
+  background: #0a0e1e;
+}
+
+/* ================= BODY ================= */
+
+body {
+  padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
-  min-height: 100vh;
+
   background: var(--bg-main);
   color: var(--text-main);
-  margin: 0;
+
+  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ================= BRAND / HEADINGS ================= */
+
+h1,
+h2,
+h3 {
+  font-family: "Playwrite NZ Basic", "Nunito", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Logo / brand text (SemFlow) */
+.brand {
+  font-family: "Sour Gummy", cursive;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* Optional decorative usage */
+.script {
+  font-family: "Dancing Script", cursive;
+}
+
+/* ================= LINKS ================= */
 
 a {
   color: var(--accent);
   text-decoration: none;
 }
+
+a:hover {
+  color: var(--accent-strong);
+}
+
+/* ================= SELECTION ================= */
+
+::selection {
+  background: rgba(56, 189, 248, 0.25);
+  color: #fff;
+}
+
+
 
 .auth-container {
   min-height: 100vh;
