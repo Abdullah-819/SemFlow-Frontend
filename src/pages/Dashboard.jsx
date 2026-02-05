@@ -14,6 +14,10 @@ const Dashboard = () => {
     navigate(path)
   }
 
+  const isActive = path =>
+    location.pathname === path ||
+    (path === "/dashboard" && location.pathname === "/dashboard")
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -47,21 +51,63 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <nav className="side-nav">
-          <button onClick={() => go("/dashboard")}>📘 Courses</button>
-          <button onClick={() => go("/dashboard/assessments")}>📝 Assessments</button>
-          <button onClick={() => go("/dashboard/venues")}>🏫 Venues</button>
-          <button onClick={() => go("/dashboard/calendar")}>🗓️ Semester Calendar</button>
-          <button onClick={() => go("/dashboard/about")}>ℹ️ About</button>
-        </nav>
+<nav className="side-nav">
+  <div className="nav-section">
+    <div className="nav-label">Academic</div>
+
+    <button
+      className={isActive("/dashboard/study-log") ? "active" : ""}
+      onClick={() => go("/dashboard/study-log")}
+    >
+      📒 Study Log
+    </button>
+
+    <button
+      className={isActive("/dashboard") ? "active" : ""}
+      onClick={() => go("/dashboard")}
+    >
+      📘 Courses
+    </button>
+
+    <button
+      className={isActive("/dashboard/assessments") ? "active" : ""}
+      onClick={() => go("/dashboard/assessments")}
+    >
+      📝 Assessments
+    </button>
+
+    <button
+      className={isActive("/dashboard/venues") ? "active" : ""}
+      onClick={() => go("/dashboard/venues")}
+    >
+      🏫 Venues
+    </button>
+
+    <button
+      className={isActive("/dashboard/calendar") ? "active" : ""}
+      onClick={() => go("/dashboard/calendar")}
+    >
+      🗓️ Semester Calendar
+    </button>
+  </div>
+
+  <div className="nav-divider" />
+
+  <div className="nav-section">
+    <div className="nav-label">General</div>
+
+    <button
+      className={isActive("/dashboard/about") ? "active" : ""}
+      onClick={() => go("/dashboard/about")}
+    >
+      ℹ️ About Developer
+    </button>
+  </div>
+</nav>
+
 
         <div className="side-footer">
-          <button
-            className="danger"
-            onClick={() => {
-              logout()
-            }}
-          >
+          <button className="danger" onClick={logout}>
             Logout
           </button>
         </div>

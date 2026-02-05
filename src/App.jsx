@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
 
 import ProtectedRoute from "./components/ProtectedRoute"
-
+import StudyLog from "./pages/StudyLog"
 import Courses from "./pages/Courses"
 import Assessments from "./pages/Assessments"
 import Venues from "./pages/Venues"
@@ -32,6 +32,7 @@ function App() {
         <Route path="venues" element={<Venues />} />
         <Route path="calendar" element={<SemesterCalendar />} />
         <Route path="about" element={<About />} />
+        <Route path="study-log" element={<StudyLog />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
