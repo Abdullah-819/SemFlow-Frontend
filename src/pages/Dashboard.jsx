@@ -134,28 +134,55 @@ const Dashboard = () => {
       <input
         type="file"
         accept="image/*"
-        onChange={async e => {
-          const file = e.target.files[0]
-          if (!file) return
 
-          const formData = new FormData()
-          formData.append("profilePic", file)
 
-          const token = localStorage.getItem("token")
+onChange={async e => {
+  try {
+    const file = e.target.files[0]
+    if (!file) return
 
-          const res = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL}/api/auth/update-photo`,
-            {
-              method: "PUT",
-              headers: { Authorization: `Bearer ${token}` },
-              body: formData
-            }
-          )
+    const formData = new FormData()
+    formData.append("profilePic", file)
 
-          const data = await res.json()
-          localStorage.setItem("semflow_user", JSON.stringify(data))
-          window.location.reload()
-        }}
+    const token = localStorage.getItem("token")
+
+    if (!token) {
+      alert("Login expired. Please login again.")
+      return
+    }
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/auth/update-photo`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      }
+    )
+
+    if (!res.ok) {
+      const err = await res.json()
+      throw new Error(err.message || "Upload failed")
+    }
+
+    const data = await res.json()
+
+    localStorage.setItem("semflow_user", JSON.stringify(data.user))
+localStorage.setItem("token", data.token)
+
+
+    setShowProfile(false)
+    window.location.reload()
+  } catch (err) {
+    console.error(err)
+    alert("Photo update failed")
+  }
+}}
+
+
+        
       />
     </div>
   </div>
