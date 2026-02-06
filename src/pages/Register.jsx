@@ -9,6 +9,7 @@ const Register = () => {
   const [displayName, setDisplayName] = useState("")
   const [rollNumber, setRollNumber] = useState("")
   const [password, setPassword] = useState("")
+  const [profilePic, setProfilePic] = useState(null)
   const [error, setError] = useState("")
 
   const handleSubmit = async e => {
@@ -16,8 +17,18 @@ const Register = () => {
     if (loading) return
 
     setError("")
+
     try {
-      await register({ displayName, rollNumber, password })
+      const formData = new FormData()
+      formData.append("displayName", displayName)
+      formData.append("rollNumber", rollNumber)
+      formData.append("password", password)
+
+      if (profilePic) {
+        formData.append("profilePic", profilePic)
+      }
+
+      await register(formData)
       navigate("/dashboard")
     } catch {
       setError("Registration failed. Try again.")
@@ -56,6 +67,13 @@ const Register = () => {
           onChange={e => setPassword(e.target.value)}
           disabled={loading}
           required
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={e => setProfilePic(e.target.files[0])}
+          disabled={loading}
         />
 
         <button type="submit" disabled={loading}>

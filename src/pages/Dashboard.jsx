@@ -8,6 +8,7 @@ const Dashboard = () => {
   const location = useLocation()
 
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
 
   const go = path => {
     setMenuOpen(false)
@@ -42,9 +43,17 @@ const Dashboard = () => {
 
       <aside className={`side-panel ${menuOpen ? "show" : ""}`}>
         <div className="side-identity">
-          <div className="avatar">
-            {user?.displayName?.charAt(0)}
-          </div>
+
+<div className="avatar" onClick={() => setShowProfile(true)}>
+  {user?.profilePic ? (
+    <img src={user.profilePic} alt="profile" />
+  ) : (
+    <span>{user?.displayName?.charAt(0)}</span>
+  )}
+</div>
+
+
+
           <div className="identity-text">
             <div className="identity-name">{user?.displayName}</div>
             <div className="identity-roll">{user?.rollNumber}</div>
@@ -112,6 +121,46 @@ const Dashboard = () => {
           </button>
         </div>
       </aside>
+      {showProfile && (
+  <div className="profile-modal">
+    <div className="profile-box">
+      <button className="close-btn" onClick={() => setShowProfile(false)}>×</button>
+
+      <img src={user?.profilePic} className="profile-large" />
+
+      <h3>{user?.displayName}</h3>
+      <p>{user?.rollNumber}</p>
+
+      <input
+        type="file"
+        accept="image/*"
+        onChange={async e => {
+          const file = e.target.files[0]
+          if (!file) return
+
+          const formData = new FormData()
+          formData.append("profilePic", file)
+
+          const token = localStorage.getItem("token")
+
+          const res = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/api/auth/update-photo`,
+            {
+              method: "PUT",
+              headers: { Authorization: `Bearer ${token}` },
+              body: formData
+            }
+          )
+
+          const data = await res.json()
+          localStorage.setItem("semflow_user", JSON.stringify(data))
+          window.location.reload()
+        }}
+      />
+    </div>
+  </div>
+)}
+
       <footer className="app-footer">
   Developed by Abdullah Rana © 2026
 </footer>
