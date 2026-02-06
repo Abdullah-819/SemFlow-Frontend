@@ -167,10 +167,12 @@ onChange={async e => {
       throw new Error(err.message || "Upload failed")
     }
 
-    const data = await res.json()
-
-    localStorage.setItem("semflow_user", JSON.stringify(data.user))
+const data = await res.json()
 localStorage.setItem("token", data.token)
+localStorage.setItem("semflow_user", JSON.stringify(data.user))
+setShowProfile(false)
+window.location.reload()
+
 
 
     setShowProfile(false)

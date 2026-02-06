@@ -234,10 +234,10 @@ const Courses = () => {
           <div className="modal-sheet">
             <h3>{editingCourse ? "Edit Course" : "Add Course"}</h3>
 
-            <input name="courseName" value={form.courseName} onChange={handleChange} />
-            <input name="creditHours" type="number" value={form.creditHours} onChange={handleChange} />
-            <input name="theoryAssignments" type="number" value={form.theoryAssignments} onChange={handleChange} />
-            <input name="theoryQuizzes" type="number" value={form.theoryQuizzes} onChange={handleChange} />
+            <input name="courseName" placeholder="Course Name (e.g. Data Structures)" value={form.courseName} onChange={handleChange} />
+            <input name="creditHours" type="number" placeholder="Credit Hours (e.g. 3)" value={form.creditHours} onChange={handleChange} />
+            <input name="theoryAssignments" type="number" placeholder="Total Theory Assignments" value={form.theoryAssignments} onChange={handleChange} />
+            <input name="theoryQuizzes" type="number" placeholder="Total Theory Quizzes" value={form.theoryQuizzes} onChange={handleChange} />
 
             <label className="checkbox-row">
               <input type="checkbox" name="hasLab" checked={form.hasLab} onChange={handleChange} />
@@ -246,9 +246,9 @@ const Courses = () => {
 
             {form.hasLab && (
               <>
-                <input name="labHours" type="number" value={form.labHours} onChange={handleChange} />
-                <input name="labAssignments" type="number" value={form.labAssignments} onChange={handleChange} />
-                <input name="labQuizzes" type="number" value={form.labQuizzes} onChange={handleChange} />
+                <input name="labHours" type="number" placeholder="Lab Credit Hours" value={form.labHours} onChange={handleChange} />
+                <input name="labAssignments" type="number" placeholder="Lab Assignments" value={form.labAssignments} onChange={handleChange} />
+                <input name="labQuizzes" type="number" placeholder="Lab Quizzes" value={form.labQuizzes} onChange={handleChange} />
               </>
             )}
 

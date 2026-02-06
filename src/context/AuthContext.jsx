@@ -21,27 +21,25 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
-  const login = async credentials => {
-    Object.keys(localStorage)
-      .filter(k => k.startsWith("semflow_"))
-      .forEach(k => localStorage.removeItem(k))
+const login = async credentials => {
+  setLoading(true)
+  try {
+    const res = await api.post("/api/auth/login", credentials)
 
-    setLoading(true)
-    try {
-      const res = await api.post("/api/auth/login", credentials)
+    setToken(res.data.token)
 
-      setToken(res.data.token)
-      localStorage.setItem(
-        "semflow_user",
-        JSON.stringify(res.data.user)
-      )
+    localStorage.setItem(
+      "semflow_user",
+      JSON.stringify(res.data.user)
+    )
 
-      setAuthToken(res.data.token)
-      setUser(res.data.user)
-    } finally {
-      setLoading(false)
-    }
+    setAuthToken(res.data.token)
+    setUser(res.data.user)
+  } finally {
+    setLoading(false)
   }
+}
+
 
   const register = async formData => {
     setLoading(true)
