@@ -16,7 +16,7 @@ const timetable = [
       {
         subject: "Computer Networks",
         type: "Lab",
-        slot: "1st–3rd Slot",
+        slot: "2nd–3rd Slot",
         time: "9:55 – 12:45",
         teacher: "Mr. Muhammad Usman Nasir",
         venue: "CLab-11"
@@ -157,7 +157,7 @@ const Venues = () => {
 
       {currentDay.lectures.length === 0 ? (
         <div className="holiday-card premium">
-          🎉 No lectures today  
+          🎉 Ajj koi lecture nahi mojain maro
           <small>FA24-BCS-4-E</small>
         </div>
       ) : (
