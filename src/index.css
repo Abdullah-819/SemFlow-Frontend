@@ -1829,6 +1829,159 @@ a:hover {
   padding: 1rem;
 }
 
+.venues-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.venues-page-header .page-title {
+  margin: 0;
+}
+
+.venues-filter-wrap {
+  position: relative;
+}
+
+.venues-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+  color: #e8ebff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.venues-filter-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.venues-filter-btn.active svg {
+  transform: rotate(180deg);
+}
+
+.venues-filter-btn:hover,
+.venues-filter-btn.active {
+  border-color: rgba(123,92,255,0.5);
+  box-shadow: 0 4px 16px rgba(123,92,255,0.25);
+}
+
+.venues-filter-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 260px;
+  max-width: min(320px, calc(100vw - 2rem));
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(15,20,35,0.98);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+  animation: filterMenuIn 0.2s ease;
+}
+
+@keyframes filterMenuIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-section {
+  margin-bottom: 1rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.5rem;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filter-options.filter-teachers {
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.filter-options.filter-teachers::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filter-options.filter-teachers::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #e4e9ff;
+  cursor: pointer;
+  padding: 0.4rem 0;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.filter-option:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.filter-option input[type="radio"],
+.filter-option input[type="checkbox"] {
+  accent-color: #7b5cff;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.filter-empty {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Day accent colors - unique styling per day */
+.day-btn.day-monday.active { background: linear-gradient(135deg, #6366f1, #4f46e5); box-shadow: 0 6px 24px rgba(99,102,241,0.5); }
+.day-btn.day-tuesday.active { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 6px 24px rgba(236,72,153,0.5); }
+.day-btn.day-wednesday.active { background: linear-gradient(135deg, #14b8a6, #0d9488); box-shadow: 0 6px 24px rgba(20,184,166,0.5); }
+.day-btn.day-thursday.active { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 6px 24px rgba(245,158,11,0.5); }
+.day-btn.day-friday.active { background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 6px 24px rgba(139,92,246,0.5); }
+
+.day-btn.day-monday:hover:not(.active) { border-color: rgba(99,102,241,0.5); }
+.day-btn.day-tuesday:hover:not(.active) { border-color: rgba(236,72,153,0.5); }
+.day-btn.day-wednesday:hover:not(.active) { border-color: rgba(20,184,166,0.5); }
+.day-btn.day-thursday:hover:not(.active) { border-color: rgba(245,158,11,0.5); }
+.day-btn.day-friday:hover:not(.active) { border-color: rgba(139,92,246,0.5); }
+
+.day-header.day-monday h3 { color: #a5b4fc; }
+.day-header.day-tuesday h3 { color: #f9a8d4; }
+.day-header.day-wednesday h3 { color: #5eead4; }
+.day-header.day-thursday h3 { color: #fcd34d; }
+.day-header.day-friday h3 { color: #c4b5fd; }
+
 .day-filter {
   display: flex;
   gap: 0.6rem;
@@ -1958,6 +2111,42 @@ a:hover {
     min-width: 72px;
     padding: 0.45rem 0.8rem;
     font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .venues-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .venues-filter-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .venues-filter-menu {
+    right: 0;
+    left: 0;
+    min-width: unset;
+    width: 100%;
+  }
+
+  .venues-filter-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.78rem;
+    min-height: 44px;
+  }
+
+  .filter-option {
+    padding: 0.6rem 0.5rem;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .filter-options.filter-teachers {
+    max-height: 160px;
   }
 }
 

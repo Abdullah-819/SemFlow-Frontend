@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Outlet, useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
+import api from "../api/axios"
+import { setToken } from "../utils/storage"
 
 const Dashboard = () => {
   const { user, logout } = useAuth()
@@ -134,57 +136,30 @@ const Dashboard = () => {
       <input
         type="file"
         accept="image/*"
+        onChange={async e => {
+          const file = e.target.files[0]
+          if (!file) return
+          try {
+            const formData = new FormData()
+            formData.append("profilePic", file)
 
+            const res = await api.put("/api/auth/update-photo", formData, {
+              timeout: 60000
+            })
 
-onChange={async e => {
-  try {
-    const file = e.target.files[0]
-    if (!file) return
-
-    const formData = new FormData()
-    formData.append("profilePic", file)
-
-    const token = localStorage.getItem("token")
-
-    if (!token) {
-      alert("Login expired. Please login again.")
-      return
-    }
-
-    const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/auth/update-photo`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        body: formData
-      }
-    )
-
-    if (!res.ok) {
-      const err = await res.json()
-      throw new Error(err.message || "Upload failed")
-    }
-
-const data = await res.json()
-localStorage.setItem("token", data.token)
-localStorage.setItem("semflow_user", JSON.stringify(data.user))
-setShowProfile(false)
-window.location.reload()
-
-
-
-    setShowProfile(false)
-    window.location.reload()
-  } catch (err) {
-    console.error(err)
-    alert("Photo update failed")
-  }
-}}
-
-
-        
+            const { token: newToken, user: updatedUser } = res.data
+            if (newToken) setToken(newToken)
+            if (updatedUser) {
+              localStorage.setItem("semflow_user", JSON.stringify(updatedUser))
+            }
+            setShowProfile(false)
+            window.location.reload()
+          } catch (err) {
+            const message =
+              err.response?.data?.message || err.message || "Photo update failed"
+            alert(message)
+          }
+        }}
       />
     </div>
   </div>
