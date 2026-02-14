@@ -1963,6 +1963,155 @@ a:hover {
   opacity: 0.9;
 }
 
+.filter-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(15,23,42,0.6);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: rgba(123,92,255,0.6);
+}
+
+.filter-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+  opacity: 0.65;
+}
+
+.filter-clear-btn {
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.filter-clear-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-main);
+}
+
+.filter-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.venues-filter-btn.has-filters {
+  position: relative;
+}
+
+.filter-slot-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+/* Slot filter row - same style as day buttons */
+.slot-filter {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  margin-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+}
+
+.slot-filter::-webkit-scrollbar {
+  height: 4px;
+}
+
+.slot-filter::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px;
+}
+
+.slot-btn {
+  flex-shrink: 0;
+  min-width: 64px;
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+  color: #e8ebff;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.slot-btn .slot-btn-label {
+  font-weight: 600;
+}
+
+.slot-btn .slot-btn-time {
+  font-size: 0.55rem;
+  opacity: 0.75;
+}
+
+.slot-btn:hover {
+  border-color: rgba(123,92,255,0.5);
+  transform: translateY(-2px);
+}
+
+.slot-btn.active {
+  background: linear-gradient(135deg, #6f8cff, #7b5cff);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(123,92,255,0.4);
+}
+
+.slot-btn.slot-break {
+  border-color: rgba(255,180,100,0.3);
+}
+
+.slot-btn.slot-break.active {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 4px 16px rgba(245,158,11,0.4);
+}
+
+.day-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.venue-card-day-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  background: rgba(123,92,255,0.25);
+  color: #c4b5fd;
+  margin-bottom: 0.5rem;
+}
+
+.day-header.teacher-view h3 {
+  color: #a5b4fc;
+}
+
 /* Day accent colors - unique styling per day */
 .day-btn.day-monday.active { background: linear-gradient(135deg, #6366f1, #4f46e5); box-shadow: 0 6px 24px rgba(99,102,241,0.5); }
 .day-btn.day-tuesday.active { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 6px 24px rgba(236,72,153,0.5); }
@@ -2111,6 +2260,16 @@ a:hover {
     min-width: 72px;
     padding: 0.45rem 0.8rem;
     font-size: 0.72rem;
+  }
+
+  .slot-btn {
+    min-width: 56px;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.65rem;
+  }
+
+  .slot-btn .slot-btn-time {
+    font-size: 0.5rem;
   }
 }
 
@@ -2443,6 +2602,225 @@ a:hover {
   font-size: 0.7rem;
   opacity: 0.7;
 }
+
+/* Venues: Filter & Sort button and menu */
+.venues-actions {
+  margin-bottom: 1rem;
+}
+
+.filter-sort-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+  color: #e8ebff;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.filter-sort-btn .filter-sort-btn-icon {
+  font-size: 0.7rem;
+  opacity: 0.9;
+  transition: transform 0.25s ease;
+}
+
+.filter-sort-btn.open .filter-sort-btn-icon {
+  transform: rotate(180deg);
+}
+
+.filter-sort-btn:hover,
+.filter-sort-btn.open {
+  border-color: rgba(123,92,255,0.5);
+  box-shadow: 0 4px 16px rgba(123,92,255,0.2);
+}
+
+.filter-sort-btn.has-filters {
+  border-color: rgba(56,189,248,0.5);
+  box-shadow: 0 0 0 1px rgba(56,189,248,0.2);
+}
+
+.filter-sort-btn .filter-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: 0.2rem;
+}
+
+.filter-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 280px;
+  max-width: min(340px, calc(100vw - 2rem));
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(15,20,35,0.98);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+  animation: filterMenuIn 0.2s ease;
+}
+
+.filter-menu-section {
+  margin-bottom: 1rem;
+}
+
+.filter-menu-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.filter-menu-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.5rem;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: #e8ebff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.filter-slot-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.filter-slot-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+  font-size: 0.75rem;
+  color: #e4e9ff;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.filter-slot-chip:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.filter-slot-chip input {
+  accent-color: #7b5cff;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.filter-clear-btn {
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(248,113,113,0.4);
+  background: rgba(248,113,113,0.12);
+  color: #fca5a5;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.filter-clear-btn:hover {
+  background: rgba(248,113,113,0.2);
+}
+
+/* Day header synced with selected day color */
+.day-header-synced {
+  padding: 0.5rem 0;
+}
+
+/* Venue timeline: time-synced lecture cards */
+.venue-timeline {
+  gap: 0.85rem;
+}
+
+.venue-card-synced {
+  position: relative;
+  border-left: 3px solid rgba(123,92,255,0.5);
+}
+
+.venue-card-slot-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(123,92,255,0.2);
+  color: #a5b4fc;
+}
+
+.venue-meta-time {
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+}
+
+@media (max-width: 600px) {
+  .venues-actions {
+    margin-bottom: 0.9rem;
+  }
+
+  .filter-sort-btn {
+    min-height: 44px;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .filter-menu-panel {
+    left: 0;
+    right: 0;
+    min-width: unset;
+    width: 100%;
+    max-width: none;
+  }
+
+  .filter-slot-chip {
+    padding: 0.5rem 0.65rem;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .filter-select {
+    min-height: 44px;
+  }
+}
+
 .global-spinner {
   position: fixed;
   inset: 0;

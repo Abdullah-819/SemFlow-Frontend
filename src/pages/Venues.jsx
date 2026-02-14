@@ -1,27 +1,28 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
-const slots = [
-  { label: "1st Slot", time: "8:30 – 9:55" },
-  { label: "2nd Slot", time: "9:55 – 11:20" },
-  { label: "3rd Slot", time: "11:20 – 12:45" },
-  { label: "Break", time: "12:45 – 1:45" },
-  { label: "4th Slot", time: "1:45 – 3:05" },
-  { label: "5th Slot", time: "3:05 – 4:30" }
-]
-
-const slotOrderMap = { 1: 0, 2: 1, 3: 2, 4: 4, 5: 5 }
-const getSlotOrder = (slotStr) => {
-  const m = slotStr.match(/(\d+)(?:st|nd|rd|th)/)
-  return m ? (slotOrderMap[+m[1]] ?? 99) : 99
+const DAY_LABELS = {
+  Monday: "Mon",
+  Tuesday: "Tue",
+  Wednesday: "Wed",
+  Thursday: "Thu",
+  Friday: "Fri"
 }
 
-const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-const dayAccents = {
-  Monday: "day-monday",
-  Tuesday: "day-tuesday",
-  Wednesday: "day-wednesday",
-  Thursday: "day-thursday",
-  Friday: "day-friday"
+const slots = [
+  { label: "1st", time: "8:30 – 9:55", key: "1st" },
+  { label: "2nd", time: "9:55 – 11:20", key: "2nd" },
+  { label: "3rd", time: "11:20 – 12:45", key: "3rd" },
+  { label: "Break", time: "12:45 – 1:45", key: "Break" },
+  { label: "4th", time: "1:45 – 3:05", key: "4th" },
+  { label: "5th", time: "3:05 – 4:30", key: "5th" }
+]
+
+const SLOT_ORDER = { "1st": 0, "2nd": 1, "3rd": 2, "Break": 3, "4th": 4, "5th": 5 }
+
+const getSlotSortKey = slotStr => {
+  if (!slotStr) return 99
+  const match = slotStr.match(/(1st|2nd|3rd|4th|5th|Break)/)
+  return match ? SLOT_ORDER[match[1]] ?? 99 : 99
 }
 
 const timetable = [
@@ -140,45 +141,64 @@ const allTeachers = [...new Set(timetable.flatMap(d => d.lectures.map(l => l.tea
 
 const Venues = () => {
   const [selectedDay, setSelectedDay] = useState("Monday")
-  const [daySort, setDaySort] = useState("mon-fri")
-  const [timeSort, setTimeSort] = useState("earliest")
-  const [teacherFilter, setTeacherFilter] = useState([])
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [selectedSlots, setSelectedSlots] = useState([])
+  const [teacherFilter, setTeacherFilter] = useState("")
+  const [filterMenuOpen, setFilterMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
-  const toggleTeacher = (t) => {
-    setTeacherFilter(prev =>
-      prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]
-    )
-  }
-
-  const sortedDays = [...timetable].sort((a, b) => {
-    if (daySort === "mon-fri")
-      return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
-    if (daySort === "fri-mon")
-      return dayOrder.indexOf(b.day) - dayOrder.indexOf(a.day)
-    if (daySort === "most")
-      return b.lectures.length - a.lectures.length
-    return a.lectures.length - b.lectures.length
-  })
-
-  const currentDay = timetable.find(d => d.day === selectedDay)
-  const filteredLectures = (currentDay?.lectures ?? [])
-    .filter(l => teacherFilter.length === 0 || teacherFilter.includes(l.teacher))
-  const sortedLectures = [...filteredLectures].sort((a, b) => {
-    const oa = getSlotOrder(a.slot)
-    const ob = getSlotOrder(b.slot)
-    return timeSort === "earliest" ? oa - ob : ob - oa
-  })
-
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target))
-        setMenuOpen(false)
+    const handleClickOutside = e => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setFilterMenuOpen(false)
+      }
     }
     document.addEventListener("click", handleClickOutside)
     return () => document.removeEventListener("click", handleClickOutside)
   }, [])
+
+  const toggleSlot = key => {
+    setSelectedSlots(prev =>
+      prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]
+    )
+  }
+
+  const clearFilters = () => {
+    setSelectedSlots([])
+    setTeacherFilter("")
+  }
+
+  const hasActiveFilters = selectedSlots.length > 0 || teacherFilter
+
+  // When teacher selected: show ALL lectures by that teacher across ALL days
+  // Otherwise: show selected day's timetable (filtered by slots if any)
+  let lecturesRaw = []
+  let viewMode = "day" // "day" | "teacher"
+
+  if (teacherFilter) {
+    viewMode = "teacher"
+    lecturesRaw = timetable.flatMap(d =>
+      d.lectures
+        .filter(l => l.teacher === teacherFilter)
+        .map(l => ({ ...l, day: d.day }))
+    )
+  } else {
+    const dayData = timetable.find(d => d.day === selectedDay)
+    lecturesRaw = (dayData?.lectures ?? []).map(l => ({ ...l, day: dayData.day }))
+  }
+
+  const lecturesFiltered = lecturesRaw.filter(lec => {
+    if (selectedSlots.length === 0) return true
+    return selectedSlots.some(sk => lec.slot && lec.slot.includes(sk))
+  })
+
+  const lecturesSorted = [...lecturesFiltered].sort((a, b) => {
+    const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    const dayDiff = dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
+    if (dayDiff !== 0) return dayDiff
+    return getSlotSortKey(a.slot) - getSlotSortKey(b.slot)
+  })
+
+  const currentDayData = timetable.find(d => d.day === selectedDay)
 
   return (
     <div className="venues-page">
@@ -187,134 +207,133 @@ const Venues = () => {
         <div className="venues-filter-wrap" ref={menuRef}>
           <button
             type="button"
-            className={`venues-filter-btn ${menuOpen ? "active" : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
+            className={`venues-filter-btn ${filterMenuOpen ? "active" : ""} ${hasActiveFilters ? "has-filters" : ""}`}
+            onClick={e => {
+              e.stopPropagation()
+              setFilterMenuOpen(prev => !prev)
+            }}
+            aria-expanded={filterMenuOpen}
             aria-haspopup="true"
-            aria-expanded={menuOpen}
           >
             <span>Filter & Sort</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 12 15 18 9" />
             </svg>
+            {hasActiveFilters && <span className="filter-dot" />}
           </button>
-          {menuOpen && (
+
+          {filterMenuOpen && (
             <div className="venues-filter-menu">
               <div className="filter-section">
-                <span className="filter-label">Day order</span>
-                <div className="filter-options">
-                  {[
-                    { id: "mon-fri", label: "Mon → Fri" },
-                    { id: "fri-mon", label: "Fri → Mon" },
-                    { id: "most", label: "Most lectures first" },
-                    { id: "least", label: "Least lectures first" }
-                  ].map(opt => (
-                    <label key={opt.id} className="filter-option">
-                      <input
-                        type="radio"
-                        name="daySort"
-                        checked={daySort === opt.id}
-                        onChange={() => setDaySort(opt.id)}
-                      />
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="filter-section">
-                <span className="filter-label">Time slots</span>
-                <div className="filter-options">
-                  {[
-                    { id: "earliest", label: "Earliest first" },
-                    { id: "latest", label: "Latest first" }
-                  ].map(opt => (
-                    <label key={opt.id} className="filter-option">
-                      <input
-                        type="radio"
-                        name="timeSort"
-                        checked={timeSort === opt.id}
-                        onChange={() => setTimeSort(opt.id)}
-                      />
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="filter-section">
-                <span className="filter-label">Teachers</span>
-                <div className="filter-options filter-teachers">
-                  {allTeachers.map(t => (
-                    <label key={t} className="filter-option checkbox">
+                <span className="filter-label">By Time Slot</span>
+                <div className="filter-options filter-slot-options">
+                  {slots.map(s => (
+                    <label key={s.key} className="filter-option checkbox">
                       <input
                         type="checkbox"
-                        checked={teacherFilter.includes(t)}
-                        onChange={() => toggleTeacher(t)}
+                        checked={selectedSlots.includes(s.key)}
+                        onChange={() => toggleSlot(s.key)}
                       />
-                      <span>{t.replace(/^(Mr\.|Ms\.|Dr\.)\s*/, "")}</span>
+                      <span>{s.label} ({s.time})</span>
                     </label>
                   ))}
                 </div>
               </div>
+              <div className="filter-section">
+                <span className="filter-label">By Teacher</span>
+                <select
+                  className="filter-select"
+                  value={teacherFilter}
+                  onChange={e => setTeacherFilter(e.target.value)}
+                >
+                  <option value="">All teachers</option>
+                  {allTeachers.map(t => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <small className="filter-hint">Shows all lectures across the week</small>
+              </div>
+              {hasActiveFilters && (
+                <button type="button" className="filter-clear-btn" onClick={clearFilters}>
+                  Clear filters
+                </button>
+              )}
             </div>
           )}
         </div>
       </div>
 
       <div className="day-filter">
-        {sortedDays.map(d => (
+        {timetable.map(d => (
           <button
             key={d.day}
-            className={`day-btn ${dayAccents[d.day] || ""} ${selectedDay === d.day ? "active" : ""}`}
+            className={`day-btn day-${d.day.toLowerCase()} ${selectedDay === d.day && !teacherFilter ? "active" : ""}`}
             onClick={() => setSelectedDay(d.day)}
+            disabled={!!teacherFilter}
           >
-            {d.day}
+            {DAY_LABELS[d.day]}
           </button>
         ))}
       </div>
 
-      <div className="slot-legend premium">
+      <div className="slot-filter">
         {slots.map(s => (
-          <div key={s.label} className="slot-pill">
-            <span>{s.label}</span>
-            <small>{s.time}</small>
-          </div>
+          <button
+            key={s.key}
+            type="button"
+            className={`slot-btn ${selectedSlots.includes(s.key) ? "active" : ""} ${s.key === "Break" ? "slot-break" : ""}`}
+            onClick={() => toggleSlot(s.key)}
+          >
+            <span className="slot-btn-label">{s.label}</span>
+            <small className="slot-btn-time">{s.time}</small>
+          </button>
         ))}
       </div>
 
-      <div className={`day-header ${dayAccents[selectedDay] || ""}`}>
-        <h3>{selectedDay}</h3>
-        <span>{sortedLectures.length} Lectures</span>
+      <div className={`day-header day-${viewMode === "teacher" ? "teacher-view" : selectedDay.toLowerCase()}`}>
+        <h3>
+          {viewMode === "teacher"
+            ? `${teacherFilter} – All Lectures`
+            : selectedDay}
+        </h3>
+        <span>
+          {lecturesSorted.length} Lecture{lecturesSorted.length !== 1 ? "s" : ""}
+          {hasActiveFilters && " (filtered)"}
+        </span>
       </div>
 
-      {currentDay.lectures.length === 0 ? (
+      {lecturesSorted.length === 0 ? (
         <div className="holiday-card premium">
-          🎉 Ajj koi lecture nahi mojain maro
-          <small>FA24-BCS-4-E</small>
-        </div>
-      ) : sortedLectures.length === 0 ? (
-        <div className="holiday-card premium filter-empty">
-          No lectures match the selected teachers
+          {viewMode === "teacher" ? (
+            <>No lectures found for this teacher</>
+          ) : currentDayData?.lectures.length === 0 ? (
+            <>
+              🎉 Ajj koi lecture nahi mojain maro
+              <small>FA24-BCS-4-E</small>
+            </>
+          ) : (
+            <>No lectures match the selected filters</>
+          )}
         </div>
       ) : (
         <div className="card-list premium">
-          {sortedLectures.map((lec, i) => (
+          {lecturesSorted.map((lec, i) => (
             <div key={i} className="venue-card">
+              {viewMode === "teacher" && (
+                <div className="venue-card-day-badge">{DAY_LABELS[lec.day]}</div>
+              )}
               <div className="venue-card-header">
                 <h4>{lec.subject}</h4>
                 <span className={`badge ${lec.type.toLowerCase()}`}>
                   {lec.type}
                 </span>
               </div>
-
               <div className="venue-meta">
                 <span>{lec.slot}</span>
                 <span>{lec.time}</span>
               </div>
-
               <div className="venue-teacher">{lec.teacher}</div>
-
-              <div className="venue-location">
-                📍 {lec.venue}
-              </div>
+              <div className="venue-location">📍 {lec.venue}</div>
             </div>
           ))}
         </div>
