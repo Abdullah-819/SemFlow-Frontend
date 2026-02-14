@@ -44,8 +44,10 @@ const Assessments = () => {
           if (parsed.token === token) setAssessments(parsed.data)
         }
 
-        const cRes = await api.get("/api/courses")
-        const aRes = await api.get("/api/assessments")
+        const [cRes, aRes] = await Promise.all([
+          api.get("/api/courses"),
+          api.get("/api/assessments")
+        ])
 
         setCourses(cRes.data)
         setAssessments(aRes.data)

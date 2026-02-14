@@ -88,7 +88,7 @@ const StudyLog = () => {
     const payload = { date: selectedDate, ...form }
 
     const res = await api.post(`/api/logs/course/${selectedCourse}`, payload)
-    const log = res.data?.data
+    const log = res.data?.data ?? res.data
     if (!log) return
 
     const courseObj = courses.find(c => c._id === selectedCourse)
