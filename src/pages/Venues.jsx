@@ -25,7 +25,13 @@ const getSlotSortKey = slotStr => {
   return match ? SLOT_ORDER[match[1]] ?? 99 : 99
 }
 
-const timetable = [
+/* =========================
+   SECTION TIMETABLES CORE
+   ========================= */
+
+const SECTION_TIMETABLES = {
+
+"FA24-BCS-4-E": [
   {
     day: "Monday",
     lectures: [
@@ -38,16 +44,21 @@ const timetable = [
         venue: "CLab-11"
       },
       {
-        subject: "Artificial Intelligence",
+        subject: "Information Security",
         type: "Theory",
-        slot: "4th Slot",
-        time: "1:45 – 3:05",
-        teacher: "Ms. Rimsha Rafiq",
-        venue: "C2.4"
+        slot: "5th Slot",
+        time: "3:05 – 4:30",
+        teacher: "Mr. Muhammad Umar",
+        venue: "C1"
       }
     ]
   },
-  { day: "Tuesday", lectures: [] },
+
+  {
+    day: "Tuesday",
+    lectures: []
+  },
+
   {
     day: "Wednesday",
     lectures: [
@@ -58,6 +69,14 @@ const timetable = [
         time: "9:55 – 11:20",
         teacher: "Mr. Muhammad Usman Nasir",
         venue: "D9"
+      },
+      {
+        subject: "Artificial Intelligence",
+        type: "Theory",
+        slot: "3rd Slot",
+        time: "11:20 – 12:45",
+        teacher: "Ms. Rimsha Rafiq",
+        venue: "D1"
       },
       {
         subject: "Multivariable Calculus",
@@ -77,6 +96,7 @@ const timetable = [
       }
     ]
   },
+
   {
     day: "Thursday",
     lectures: [
@@ -99,24 +119,17 @@ const timetable = [
       {
         subject: "Artificial Intelligence",
         type: "Lab",
-        slot: "4th Slot",
-        time: "1:45 – 3:05",
+        slot: "4th–5th Slot",
+        time: "1:45 – 4:30",
         teacher: "Ms. Rimsha Rafiq",
         venue: "CLab-2"
       }
     ]
   },
+
   {
     day: "Friday",
     lectures: [
-      {
-        subject: "Information Security",
-        type: "Theory",
-        slot: "1st Slot",
-        time: "8:30 – 9:55",
-        teacher: "Mr. Muhammad Umar",
-        venue: "C1.3"
-      },
       {
         subject: "Artificial Intelligence",
         type: "Theory",
@@ -135,16 +148,161 @@ const timetable = [
       }
     ]
   }
-]
+],
 
-const allTeachers = [...new Set(timetable.flatMap(d => d.lectures.map(l => l.teacher)))].sort()
+"SP25-BSE-3-B": [
+  {
+    day: "Monday",
+    lectures: [
+      {
+        subject: "Database Systems",
+        type: "Theory",
+        slot: "2nd Slot",
+        time: "9:55 – 11:20",
+        teacher: "Ms. Afia Afzaal",
+        venue: "D8"
+      },
+      {
+        subject: "Database Systems",
+        type: "Lab",
+        slot: "4th–5th Slot",
+        time: "1:45 – 4:30",
+        teacher: "Ms. Afia Afzaal",
+        venue: "CLab-9"
+      }
+    ]
+  },
+
+  {
+    day: "Tuesday",
+    lectures: [
+      {
+        subject: "Software Engineering",
+        type: "Theory",
+        slot: "1st Slot",
+        time: "8:30 – 9:55",
+        teacher: "Ms. Abida Kausar",
+        venue: "D2"
+      },
+      {
+        subject: "Fundamentals of Digital Logic Design",
+        type: "Lab",
+        slot: "2nd–3rd Slot",
+        time: "9:55 – 12:45",
+        teacher: "Mr. Kashif",
+        venue: "DLD Lab"
+      },
+      {
+        subject: "Data Structures",
+        type: "Theory",
+        slot: "4th Slot",
+        time: "1:45 – 3:05",
+        teacher: "Dr. Muhammad Shoaib",
+        venue: "C1.1"
+      }
+    ]
+  },
+
+  {
+    day: "Wednesday",
+    lectures: [
+      {
+        subject: "Calculus and Analytic Geometry",
+        type: "Theory",
+        slot: "1st Slot",
+        time: "8:30 – 9:55",
+        teacher: "Dr. Amar Rauf",
+        venue: "D4"
+      },
+      {
+        subject: "Data Structures",
+        type: "Theory",
+        slot: "2nd Slot",
+        time: "9:55 – 11:20",
+        teacher: "Dr. Muhammad Shoaib",
+        venue: "C1.4"
+      },
+      {
+        subject: "Software Engineering",
+        type: "Theory",
+        slot: "3rd Slot",
+        time: "11:20 – 12:45",
+        teacher: "Ms. Abida Kausar",
+        venue: "W2"
+      },
+      {
+        subject: "Database Systems",
+        type: "Theory",
+        slot: "4th Slot",
+        time: "1:45 – 3:05",
+        teacher: "Ms. Afia Afzaal",
+        venue: "D4"
+      },
+      {
+        subject: "Fundamentals of Digital Logic Design",
+        type: "Theory",
+        slot: "5th Slot",
+        time: "3:05 – 4:30",
+        teacher: "Mr. Khalid Majeed",
+        venue: "D9"
+      }
+    ]
+  },
+
+  {
+    day: "Thursday",
+    lectures: [
+      {
+        subject: "Calculus and Analytic Geometry",
+        type: "Theory",
+        slot: "1st Slot",
+        time: "8:30 – 9:55",
+        teacher: "Dr. Amar Rauf",
+        venue: "C2.5"
+      },
+      {
+        subject: "Data Structures",
+        type: "Lab",
+        slot: "2nd–3rd Slot",
+        time: "9:55 – 12:45",
+        teacher: "Mr. Shehzad Ali",
+        venue: "CLab-3"
+      },
+      {
+        subject: "Fundamentals of Digital Logic Design",
+        type: "Theory",
+        slot: "4th Slot",
+        time: "1:45 – 3:05",
+        teacher: "Mr. Khalid Majeed",
+        venue: "D9"
+      }
+    ]
+  },
+
+  {
+    day: "Friday",
+    lectures: []
+  }
+]}
+
 
 const Venues = () => {
+
+  const [selectedSection, setSelectedSection] = useState(null)
   const [selectedDay, setSelectedDay] = useState("Monday")
   const [selectedSlots, setSelectedSlots] = useState([])
   const [teacherFilter, setTeacherFilter] = useState("")
   const [filterMenuOpen, setFilterMenuOpen] = useState(false)
+
   const menuRef = useRef(null)
+
+  const timetable = selectedSection ? SECTION_TIMETABLES[selectedSection] : []
+
+  const allTeachers = [
+    ...new Set(
+      timetable.flatMap(d => d.lectures.map(l => l.teacher))
+    )
+  ].sort()
 
   useEffect(() => {
     const handleClickOutside = e => {
@@ -169,10 +327,8 @@ const Venues = () => {
 
   const hasActiveFilters = selectedSlots.length > 0 || teacherFilter
 
-  // When teacher selected: show ALL lectures by that teacher across ALL days
-  // Otherwise: show selected day's timetable (filtered by slots if any)
   let lecturesRaw = []
-  let viewMode = "day" // "day" | "teacher"
+  let viewMode = "day"
 
   if (teacherFilter) {
     viewMode = "teacher"
@@ -198,12 +354,52 @@ const Venues = () => {
     return getSlotSortKey(a.slot) - getSlotSortKey(b.slot)
   })
 
+  /* =========================
+     SECTION SELECT SCREEN
+     ========================= */
+
+  if (!selectedSection) {
+    return (
+      <div className="venues-page">
+        <h2 className="page-title">View Timetable</h2>
+
+        <div className="section-selector">
+          {Object.keys(SECTION_TIMETABLES).map(section => (
+            <button
+              key={section}
+              className="section-btn"
+              onClick={() => setSelectedSection(section)}
+            >
+              {section}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  /* =========================
+     MAIN VENUES UI
+     ========================= */
+
   const currentDayData = timetable.find(d => d.day === selectedDay)
 
   return (
     <div className="venues-page">
+
       <div className="venues-page-header">
         <h2 className="page-title">Venues</h2>
+
+        <button
+          className="back-section-btn"
+          onClick={() => {
+            setSelectedSection(null)
+            clearFilters()
+          }}
+        >
+          Change Section
+        </button>
+
         <div className="venues-filter-wrap" ref={menuRef}>
           <button
             type="button"
@@ -212,23 +408,18 @@ const Venues = () => {
               e.stopPropagation()
               setFilterMenuOpen(prev => !prev)
             }}
-            aria-expanded={filterMenuOpen}
-            aria-haspopup="true"
           >
-            <span>Filter & Sort</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-            {hasActiveFilters && <span className="filter-dot" />}
+            Filter & Sort
           </button>
 
           {filterMenuOpen && (
             <div className="venues-filter-menu">
+
               <div className="filter-section">
                 <span className="filter-label">By Time Slot</span>
-                <div className="filter-options filter-slot-options">
+                <div className="filter-options">
                   {slots.map(s => (
-                    <label key={s.key} className="filter-option checkbox">
+                    <label key={s.key}>
                       <input
                         type="checkbox"
                         checked={selectedSlots.includes(s.key)}
@@ -239,10 +430,10 @@ const Venues = () => {
                   ))}
                 </div>
               </div>
+
               <div className="filter-section">
                 <span className="filter-label">By Teacher</span>
                 <select
-                  className="filter-select"
                   value={teacherFilter}
                   onChange={e => setTeacherFilter(e.target.value)}
                 >
@@ -251,13 +442,14 @@ const Venues = () => {
                     <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
-                <small className="filter-hint">Shows all lectures across the week</small>
               </div>
+
               {hasActiveFilters && (
-                <button type="button" className="filter-clear-btn" onClick={clearFilters}>
+                <button onClick={clearFilters}>
                   Clear filters
                 </button>
               )}
+
             </div>
           )}
         </div>
@@ -267,7 +459,7 @@ const Venues = () => {
         {timetable.map(d => (
           <button
             key={d.day}
-            className={`day-btn day-${d.day.toLowerCase()} ${selectedDay === d.day && !teacherFilter ? "active" : ""}`}
+            className={selectedDay === d.day ? "active" : ""}
             onClick={() => setSelectedDay(d.day)}
             disabled={!!teacherFilter}
           >
@@ -276,64 +468,23 @@ const Venues = () => {
         ))}
       </div>
 
-      <div className="slot-filter">
-        {slots.map(s => (
-          <button
-            key={s.key}
-            type="button"
-            className={`slot-btn ${selectedSlots.includes(s.key) ? "active" : ""} ${s.key === "Break" ? "slot-break" : ""}`}
-            onClick={() => toggleSlot(s.key)}
-          >
-            <span className="slot-btn-label">{s.label}</span>
-            <small className="slot-btn-time">{s.time}</small>
-          </button>
-        ))}
-      </div>
-
-      <div className={`day-header day-${viewMode === "teacher" ? "teacher-view" : selectedDay.toLowerCase()}`}>
-        <h3>
-          {viewMode === "teacher"
-            ? `${teacherFilter} – All Lectures`
-            : selectedDay}
-        </h3>
-        <span>
-          {lecturesSorted.length} Lecture{lecturesSorted.length !== 1 ? "s" : ""}
-          {hasActiveFilters && " (filtered)"}
-        </span>
-      </div>
-
       {lecturesSorted.length === 0 ? (
         <div className="holiday-card premium">
-          {viewMode === "teacher" ? (
-            <>No lectures found for this teacher</>
-          ) : currentDayData?.lectures.length === 0 ? (
-            <>
-              🎉 Ajj koi lecture nahi mojain maro
-              <small>FA24-BCS-4-E</small>
-            </>
-          ) : (
-            <>No lectures match the selected filters</>
-          )}
+          No lectures available
+          <small>{selectedSection}</small>
         </div>
       ) : (
         <div className="card-list premium">
           {lecturesSorted.map((lec, i) => (
             <div key={i} className="venue-card">
-              {viewMode === "teacher" && (
-                <div className="venue-card-day-badge">{DAY_LABELS[lec.day]}</div>
-              )}
               <div className="venue-card-header">
                 <h4>{lec.subject}</h4>
-                <span className={`badge ${lec.type.toLowerCase()}`}>
-                  {lec.type}
-                </span>
+                <span>{lec.type}</span>
               </div>
-              <div className="venue-meta">
-                <span>{lec.slot}</span>
-                <span>{lec.time}</span>
-              </div>
-              <div className="venue-teacher">{lec.teacher}</div>
-              <div className="venue-location">📍 {lec.venue}</div>
+              <div>{lec.slot}</div>
+              <div>{lec.time}</div>
+              <div>{lec.teacher}</div>
+              <div>📍 {lec.venue}</div>
             </div>
           ))}
         </div>

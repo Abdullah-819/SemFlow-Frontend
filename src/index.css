@@ -3048,3 +3048,184 @@ padding-bottom: env(safe-area-inset-bottom);
   color: white;
   transform: scale(1.2);
 }
+.back-section-btn {
+  position: relative;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: linear-gradient(165deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  backdrop-filter: blur(18px);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .4px;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  overflow: hidden;
+}
+
+.back-section-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.back-section-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.28);
+  box-shadow: 0 8px 24px rgba(0,0,0,.45);
+}
+
+.back-section-btn:hover::before {
+  opacity: 1;
+}
+
+.back-section-btn:active {
+  transform: scale(.96);
+}
+
+.section-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+  gap: 14px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.section-btn {
+  position: relative;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(150deg, rgba(255,255,255,.06), rgba(255,255,255,.01));
+  backdrop-filter: blur(20px);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease;
+  overflow: hidden;
+}
+
+.section-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(255,255,255,.28), transparent 40%);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.section-btn::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(120deg,#7df9ff,#a78bfa,#60a5fa,#7df9ff);
+  opacity: 0;
+  z-index: -1;
+  filter: blur(12px);
+  transition: opacity .4s ease;
+}
+
+.section-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(255,255,255,.3);
+  box-shadow: 0 14px 36px rgba(0,0,0,.5);
+}
+
+.section-btn:hover::before {
+  opacity: 1;
+}
+
+.section-btn:hover::after {
+  opacity: .9;
+}
+
+.section-btn:active {
+  transform: scale(.96);
+}
+
+.day-filter {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.day-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.day-filter button {
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  border-radius: 9px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.01));
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.88);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.day-filter button:hover {
+  border-color: rgba(255,255,255,0.35);
+  transform: translateY(-1px);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+}
+
+.day-filter button.active {
+  color: #fff;
+  border-color: rgba(255,255,255,0.42);
+  background: linear-gradient(120deg, rgba(125,249,255,.24), rgba(167,139,250,.24));
+  box-shadow: 0 6px 16px rgba(0,0,0,.45);
+}
+
+.day-filter button.active::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(120deg,#7df9ff,#a78bfa,#60a5fa);
+  opacity: .5;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.day-filter button:active {
+  transform: scale(.94);
+}
+
+.day-filter button:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .day-filter button {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .day-filter button {
+    padding: 9px 13px;
+    font-size: 12px;
+  }
+}
+
