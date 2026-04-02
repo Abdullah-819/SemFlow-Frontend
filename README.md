@@ -103,17 +103,11 @@ http://localhost:5173
 📌 Project Status
 
 Backend: ✅ Completed & Deployed
-
-Frontend: 🚧 In Progress
-
-Phase-1 Scope: Completed
-
-Future Enhancements: GPA, UI polish, mobile responsiveness
-
+Frontend: ✅ Completed & Deployed
 👨‍💻 Author
 Abdullah Rana is the developer of this project
-Developed as a semester project with a focus on clarity, correctness, and production-style architecture.
-=======
+Developed as an organization project with a focus on clarity, correctness, and production-style architecture.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
