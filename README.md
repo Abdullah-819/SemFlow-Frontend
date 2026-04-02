@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SemFlow Frontend
 
 SemFlow Frontend is a React (Vite) based web application for managing semester courses and tracking daily, subject-wise study progress.  
